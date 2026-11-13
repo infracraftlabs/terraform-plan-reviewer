@@ -1,0 +1,96 @@
+{
+  "summary": "The plan replaces a database instance, updates a security group to allow internet access on port 22, and updates tags on an EC2 instance. A reviewer should focus on the database replacement and the open SSH access in the security group first.",
+  "likely_causes": [
+    {
+      "cause": "module.database.aws_db_instance.main: Deletion protection is disabled, risking accidental data loss during replacement",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source": "rule-hits",
+          "quote": "R2: [high] protection-off on module.database.aws_db_instance.main at deletion_protection: Deletion protection turned off"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_293 FAILED on module.database.aws_db_instance.main: Ensure that AWS database instances have deletion protection enabled"
+        }
+      ]
+    },
+    {
+      "cause": "module.database.aws_db_instance.main: The database will be replaced, risking data loss unless migration is planned",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source": "rule-hits",
+          "quote": "R3: [high] replace on module.database.aws_db_instance.main: Resource will be replaced (destroyed and re-created); stateful: data loss risk unless data is migrated; forced by: identifier"
+        }
+      ]
+    },
+    {
+      "cause": "aws_security_group.web: Ingress allows access from 0.0.0.0/0 on port 22, exposing the system to potential attacks",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source": "rule-hits",
+          "quote": "R1: [high] open-ingress on aws_security_group.web at ingress[1].cidr_blocks[0]: Network rule opens ingress to 0.0.0.0/0 (the whole internet) on port 22"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_24 FAILED on aws_security_group.web: Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+        }
+      ]
+    },
+    {
+      "cause": "module.database.aws_db_instance.main: Skip final snapshot is enabled, which may result in data loss if not properly backed up",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source": "rule-hits",
+          "quote": "R4: [medium] protection-off on module.database.aws_db_instance.main at skip_final_snapshot: Final snapshot will be skipped on delete"
+        }
+      ]
+    },
+    {
+      "cause": "module.database.aws_db_instance.main: Multiple security and compliance checks failed, indicating potential vulnerabilities and misconfigurations",
+      "confidence": "high",
+      "evidence": [
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_161 FAILED on module.database.aws_db_instance.main: Ensure RDS database has IAM authentication enabled"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_293 FAILED on module.database.aws_db_instance.main: Ensure that AWS database instances have deletion protection enabled"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_353 FAILED on module.database.aws_db_instance.main: Ensure that RDS instances have performance insights enabled"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_157 FAILED on module.database.aws_db_instance.main: Ensure that RDS instances have Multi-AZ enabled"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_129 FAILED on module.database.aws_db_instance.main: Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_226 FAILED on module.database.aws_db_instance.main: Ensure DB instance gets all minor upgrades automatically"
+        },
+        {
+          "source": "checkov",
+          "quote": "checkov CKV_AWS_118 FAILED on module.database.aws_db_instance.main: Ensure that enhanced monitoring is enabled for Amazon RDS instances"
+        }
+      ]
+    }
+  ],
+  "next_checks": [
+    "Is a data migration or a moved block planned for module.database.aws_db_instance.main?",
+    "Is the open SSH access on aws_security_group.web intentional, and is it secured with additional measures?",
+    "Are the failed compliance checks on the database instance critical, and are they being addressed?",
+    "Is the replacement of the database instance necessary, and is there a backup plan in place?",
+    "Is the use of the AWS access key in the tags on aws_instance.app secure, and is it properly rotated?",
+    "Is the DB_PASSWORD in the user_data of aws_instance.app properly managed and encrypted?"
+  ],
+  "suggested_change": "Consider enabling deletion protection for the database instance, securing the SSH access in the security group, and addressing the failed compliance checks to ensure the database is configured securely."
+}

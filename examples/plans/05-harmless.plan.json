@@ -1,0 +1,54 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.17.0",
+  "resource_changes": [
+    {
+      "address": "aws_instance.app",
+      "mode": "managed",
+      "type": "aws_instance",
+      "name": "app",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": { "ami": "ami-0123456789abcdef0", "instance_type": "t3.small", "tags": { "Name": "app", "CostCenter": "cc-100" } },
+        "after": { "ami": "ami-0123456789abcdef0", "instance_type": "t3.small", "tags": { "Name": "app", "CostCenter": "cc-200" } },
+        "after_unknown": { "tags": {} },
+        "before_sensitive": { "tags": {} },
+        "after_sensitive": { "tags": {} }
+      }
+    },
+    {
+      "address": "aws_cloudwatch_log_group.app",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "app",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": { "name": "/app/web", "retention_in_days": 30, "kms_key_id": null, "skip_destroy": false, "tags": { "Name": "app-logs" } },
+        "after_unknown": { "arn": true, "id": true, "tags": {} },
+        "before_sensitive": false,
+        "after_sensitive": { "tags": {} }
+      }
+    },
+    {
+      "address": "aws_security_group.web",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "web",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["no-op"],
+        "before": { "name": "web-sg", "egress": [{ "cidr_blocks": ["0.0.0.0/0"], "from_port": 0, "to_port": 0, "protocol": "-1" }] },
+        "after": { "name": "web-sg", "egress": [{ "cidr_blocks": ["0.0.0.0/0"], "from_port": 0, "to_port": 0, "protocol": "-1" }] },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

@@ -1,0 +1,43 @@
+{
+  "summary": "The plan replaces the main database and opens SSH on the web security group to the internet. Review the database replacement first: deletion protection and the final snapshot are both being turned off at the same time.",
+  "likely_causes": [
+    {
+      "cause": "module.database.aws_db_instance.main will be destroyed and re-created because its identifier changes, and deletion protection and the final snapshot are turned off, so existing data is likely lost unless it is migrated.",
+      "confidence": "high",
+      "evidence": [
+        {"source": "plan", "quote": "resource: module.database.aws_db_instance.main\naction: replace (delete, create)"},
+        {"source": "plan", "quote": "identifier: \"app-db\" -> \"app-db-v2\"  # forces replacement"},
+        {"source": "plan", "quote": "deletion_protection: true -> false"},
+        {"source": "plan", "quote": "skip_final_snapshot: false -> true"}
+      ]
+    },
+    {
+      "cause": "aws_security_group.web gains an ingress rule that allows SSH (port 22) from 0.0.0.0/0, the whole internet.",
+      "confidence": "high",
+      "evidence": [
+        {"source": "plan", "quote": "ingress[1].cidr_blocks[0]: (none) -> \"0.0.0.0/0\""},
+        {"source": "checkov", "quote": "checkov CKV_AWS_24 FAILED on aws_security_group.web"}
+      ]
+    },
+    {
+      "cause": "aws_instance.app user data now exports a database password in plain text.",
+      "confidence": "high",
+      "evidence": [
+        {"source": "plan", "quote": "export DB_PASSWORD=[REDACTED:secret]"}
+      ]
+    },
+    {
+      "cause": "The database engine is upgraded to a new major version.",
+      "confidence": "high",
+      "evidence": [
+        {"source": "plan", "quote": "engine_version: \"15.7\" -> \"16.4\""}
+      ]
+    }
+  ],
+  "next_checks": [
+    "Is a data migration, snapshot restore or moved block planned for module.database.aws_db_instance.main?",
+    "Should SSH on aws_security_group.web be limited to a VPN or bastion range instead of 0.0.0.0/0?",
+    "Can the database password in aws_instance.app user data come from a secrets manager instead?"
+  ],
+  "suggested_change": "Keep the old identifier (or add a moved block) so the database is updated in place, keep deletion_protection = true, and restrict the SSH rule to an internal CIDR."
+}

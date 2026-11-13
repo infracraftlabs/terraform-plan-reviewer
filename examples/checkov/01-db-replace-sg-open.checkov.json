@@ -1,0 +1,363 @@
+{
+    "check_type": "terraform_plan",
+    "results": {
+        "failed_checks": [
+            {
+                "check_id": "CKV_AWS_24",
+                "bc_check_id": "BC_AWS_NETWORKING_1",
+                "check_name": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "ingress/[1]/from_port",
+                        "ingress/[1]/to_port",
+                        "ingress/[1]/cidr_blocks",
+                        "ingress/[1]/ipv6_cidr_blocks"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    17,
+                    29
+                ],
+                "resource": "aws_security_group.web",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedIngress22",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "aws_security_group.web",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_382",
+                "bc_check_id": "BC_AWS_IAM_93",
+                "check_name": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "egress/[0]/from_port",
+                        "egress/[0]/to_port",
+                        "egress/[0]/cidr_blocks",
+                        "egress/[0]/ipv6_cidr_blocks"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    17,
+                    29
+                ],
+                "resource": "aws_security_group.web",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.SecurityGroupUnrestrictedEgressAny",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "aws_security_group.web",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_161",
+                "bc_check_id": "BC_AWS_IAM_65",
+                "check_name": "Ensure RDS database has IAM authentication enabled",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "iam_database_authentication_enabled"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.RDSIAMAuthentication",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_293",
+                "bc_check_id": "BC_AWS_GENERAL_208",
+                "check_name": "Ensure that AWS database instances have deletion protection enabled",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "deletion_protection"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.RDSInstanceDeletionProtection",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_353",
+                "bc_check_id": "BC_AWS_LOGGING_47",
+                "check_name": "Ensure that RDS instances have performance insights enabled",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "performance_insights_enabled"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.RDSInstancePerformanceInsights",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_157",
+                "bc_check_id": "BC_AWS_GENERAL_73",
+                "check_name": "Ensure that RDS instances have Multi-AZ enabled",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "multi_az"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.RDSMultiAZEnabled",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_129",
+                "bc_check_id": "BC_AWS_IAM_60",
+                "check_name": "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "enabled_cloudwatch_logs_exports/[0]"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.DBInstanceLogging",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_226",
+                "bc_check_id": "BC_AWS_GENERAL_121",
+                "check_name": "Ensure DB instance gets all minor upgrades automatically",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "auto_minor_version_upgrade"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.DBInstanceMinorUpgrade",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            },
+            {
+                "check_id": "CKV_AWS_118",
+                "bc_check_id": "BC_AWS_LOGGING_28",
+                "check_name": "Ensure that enhanced monitoring is enabled for Amazon RDS instances",
+                "check_result": {
+                    "result": "FAILED",
+                    "evaluated_keys": [
+                        "monitoring_interval"
+                    ]
+                },
+                "code_block": null,
+                "file_path": "/01-db-replace-sg-open.plan.json",
+                "file_abs_path": "/work/examples/plans/01-db-replace-sg-open.plan.json",
+                "repo_file_path": "/examples/plans/01-db-replace-sg-open.plan.json",
+                "file_line_range": [
+                    44,
+                    57
+                ],
+                "resource": "module.database.aws_db_instance.main",
+                "evaluations": null,
+                "check_class": "checkov.terraform.checks.resource.aws.RDSEnhancedMonitorEnabled",
+                "fixed_definition": null,
+                "entity_tags": null,
+                "caller_file_path": null,
+                "caller_file_line_range": null,
+                "resource_address": "module.database.aws_db_instance.main",
+                "severity": null,
+                "bc_category": null,
+                "benchmarks": null,
+                "description": null,
+                "short_description": null,
+                "vulnerability_details": null,
+                "connected_node": null,
+                "guideline": null,
+                "details": [],
+                "check_len": null,
+                "definition_context_file_path": null
+            }
+        ]
+    },
+    "summary": {
+        "passed": 12,
+        "failed": 9,
+        "skipped": 0,
+        "parsing_errors": 0,
+        "resource_count": 2,
+        "checkov_version": "3.4.4"
+    }
+}

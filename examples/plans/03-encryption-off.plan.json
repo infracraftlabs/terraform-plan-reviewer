@@ -1,0 +1,71 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.17.0",
+  "resource_changes": [
+    {
+      "address": "aws_ebs_encryption_by_default.this",
+      "mode": "managed",
+      "type": "aws_ebs_encryption_by_default",
+      "name": "this",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": { "enabled": true, "id": "terraform-20260101000000000000000001" },
+        "after": { "enabled": false, "id": "terraform-20260101000000000000000001" },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_rds_cluster.reporting",
+      "mode": "managed",
+      "type": "aws_rds_cluster",
+      "name": "reporting",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "cluster_identifier": "reporting",
+          "engine": "aurora-postgresql",
+          "deletion_protection": true,
+          "storage_encrypted": true,
+          "kms_key_id": "arn:aws:kms:eu-west-1:123456789012:key/00000000-0000-0000-0000-000000000001",
+          "backup_retention_period": 7
+        },
+        "after": {
+          "cluster_identifier": "reporting",
+          "engine": "aurora-postgresql",
+          "deletion_protection": false,
+          "storage_encrypted": true,
+          "kms_key_id": "arn:aws:kms:eu-west-1:123456789012:key/00000000-0000-0000-0000-000000000001",
+          "backup_retention_period": 1
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_s3_bucket_server_side_encryption_configuration.logs",
+      "mode": "managed",
+      "type": "aws_s3_bucket_server_side_encryption_configuration",
+      "name": "logs",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["delete"],
+        "before": {
+          "bucket": "example-logs",
+          "rule": [{ "apply_server_side_encryption_by_default": [{ "sse_algorithm": "aws:kms", "kms_master_key_id": "" }], "bucket_key_enabled": true }]
+        },
+        "after": null,
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": false
+      }
+    }
+  ],
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

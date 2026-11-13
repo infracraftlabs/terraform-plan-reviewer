@@ -1,0 +1,71 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.17.0",
+  "resource_changes": [
+    {
+      "address": "aws_iam_policy.deploy",
+      "mode": "managed",
+      "type": "aws_iam_policy",
+      "name": "deploy",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["update"],
+        "before": {
+          "name": "deploy-artifacts",
+          "path": "/",
+          "arn": "arn:aws:iam::123456789012:policy/deploy-artifacts",
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"s3:GetObject\",\"s3:PutObject\"],\"Resource\":\"arn:aws:s3:::example-artifacts/*\"}]}"
+        },
+        "after": {
+          "name": "deploy-artifacts",
+          "path": "/",
+          "arn": "arn:aws:iam::123456789012:policy/deploy-artifacts",
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"*\",\"Resource\":\"*\"}]}"
+        },
+        "after_unknown": {},
+        "before_sensitive": {},
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_iam_role_policy_attachment.ci_admin",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "ci_admin",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "role": "ci-runner",
+          "policy_arn": "arn:aws:iam::aws:policy/AdministratorAccess"
+        },
+        "after_unknown": { "id": true },
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    },
+    {
+      "address": "aws_iam_role_policy.reader",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "reader",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "name": "logs-reader",
+          "role": "ci-runner",
+          "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":\"logs:*\",\"Resource\":\"arn:aws:logs:eu-west-1:123456789012:log-group:/app/*\"}]}"
+        },
+        "after_unknown": { "id": true },
+        "before_sensitive": false,
+        "after_sensitive": {}
+      }
+    }
+  ],
+  "applyable": true,
+  "complete": true,
+  "errored": false
+}

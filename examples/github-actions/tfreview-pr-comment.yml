@@ -1,0 +1,59 @@
+# Example: review a committed Terraform plan JSON on every pull request and post one comment.
+#
+# This workflow needs NO cloud credentials. It does not run `terraform plan` or `apply`.
+# It reads a plan JSON that a trusted job (or a person) already produced with
+#   terraform plan -out plan.out && terraform show -json plan.out > plan/plan.json
+# and committed to the pull request, plus an optional Checkov JSON report.
+#
+# Token: the only write permission is `pull-requests: write`, used once to post the comment.
+# `contents: read` is needed only so actions/checkout can read the repository.
+# On pull requests from forks GitHub gives a read-only token, so the comment step fails safely.
+#
+# Model: GitHub-hosted runners have no local model, so tfreview falls back to rules-only mode
+# (deterministic rules, no AI). For AI mode, run on a self-hosted runner with Ollama and the model
+# pulled; nothing is sent to a hosted model.
+#
+# Plan files can contain secrets. tfreview masks values Terraform marks sensitive and redacts
+# secret-like strings before anything is printed or sent, but treat committed plan files with care.
+
+name: terraform-plan-review
+
+on:
+  pull_request:
+    paths:
+      - "plan/plan.json"
+      - "plan/checkov.json"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install tfreview
+        # Pin to a release tag or commit SHA you have reviewed.
+        run: pip install "tfreview @ git+https://github.com/infracraftlabs/terraform-plan-reviewer@v0.1.0"
+
+      - name: Review the plan (reads files only)
+        run: |
+          args="plan/plan.json"
+          if [ -f plan/checkov.json ]; then args="$args --checkov plan/checkov.json"; fi
+          tfreview $args --output review.md
+          cat review.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Post one pull-request comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file review.md

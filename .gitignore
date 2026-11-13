@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+# Terraform working files (only the generated plan JSON fixture is committed)
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.out
+examples/stacks/*/out/
